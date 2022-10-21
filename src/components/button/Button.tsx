@@ -1,7 +1,7 @@
-import React, {FC, memo, ReactNode, useMemo} from 'react';
+import {FC, memo, ReactNode, useMemo} from 'react';
 import includes from 'lodash/includes';
 import clsx from 'clsx';
-import {ButtonVariant} from 'types/general';
+import {ButtonVariant} from '@/types/general';
 import Spinner from '../loading/Spinner';
 
 interface Props {
@@ -37,7 +37,7 @@ const Button: FC<Props> = ({
   const clx = useMemo(
     () =>
       clsx(
-        'px-4 min-h-[2.5rem] min-w-fit text-center text-sm font-medium text-body justify-center border-2 transition-all duration-300 my-2 flex shrink-0 items-center rounded-lg',
+        'px-3 py-2 min-w-fit text-center text-xs font-thin text-body justify-center border-2 transition-all duration-300 my-2 flex shrink-0 items-center rounded-lg',
         className,
         {'bg-red-500 border-transparent': variant === 'danger' && !disabled},
         {'!text-red-500 border-transparent bg-transparent': variant === 'danger-ghost' && !disabled},

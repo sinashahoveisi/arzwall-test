@@ -5,6 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {Link} from 'react-router-dom';
 import TextInput from '@/components/input/TextInput';
 import {LoginRequestProps} from '@/types/auth';
+import Button from '@/components/button/Button';
 
 const Login: FC = () => {
   const validationSchema = yup.object().shape({
@@ -35,8 +36,11 @@ const Login: FC = () => {
       <Link className="text-center text-xs font-thin text-primary" to="/forgetPassword">
         فراموشی رمز عبور
       </Link>
-
-      <Link className="text-right text-xs font-thin text-primary" to="/register">
+      <div className="flex flex-row items-center justify-center gap-2">
+        <Button title="ورود با گوگل" />
+        <Button title="ورود" className="!px-6" />
+      </div>
+      <Link className="mt-8 text-right text-xs font-thin text-primary" to="/register">
         عضو نیستید ؟ ثبت نام کنید
       </Link>
     </form>
