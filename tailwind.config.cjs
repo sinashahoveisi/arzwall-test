@@ -46,7 +46,8 @@ module.exports = {
         },
         pen: {
           DEFAULT: 'var(--color-pen)',
-          light: 'var(--color-pen-light)'
+          light: 'var(--color-pen-light)',
+          dark: 'var(--color-pen-dark)'
         },
         body: {
           DEFAULT: 'var(--color-body)',
