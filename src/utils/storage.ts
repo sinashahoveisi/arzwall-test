@@ -21,26 +21,3 @@ export const getFromCookie = (name: string): any => {
 export const deleteFromCookie = (name: string) => {
   Cookies.remove(name);
 };
-
-export const saveToLocalStorage = (name: string, data: any) => {
-  try {
-    if (localStorage) localStorage.setItem(name, encodeURIComponent(JSON.stringify(data)));
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const getFromLocalStorage = (name: string): any => {
-  try {
-    if (localStorage)
-      return (
-        localStorage.getItem(name) !== null && JSON.parse(decodeURIComponent(localStorage.getItem(name) || '') || '')
-      );
-  } catch (e) {
-    return null;
-  }
-};
-
-export const deleteFromLocalStorage = (name: string) => {
-  if (localStorage) localStorage.removeItem(name);
-};
