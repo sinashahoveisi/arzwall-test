@@ -24,11 +24,14 @@ const Login: FC = () => {
       .string()
       .trim()
       .required('')
-      .matches(passwordRegex, 'حد اقل ۸ کاراکتر، شامل یک حرف بزرگ ، یک عدد ، یک کارکتر خاص')
+      .matches(passwordRegex, 'حداقل ۸ کاراکتر، شامل یک حرف بزرگ ، یک عدد ، یک کارکتر خاص')
   });
-  const {handleSubmit, control} = useForm<LoginRequestProps>({
+  const {handleSubmit, control, formState} = useForm<LoginRequestProps>({
+    mode: 'onChange',
     resolver: yupResolver(validationSchema)
   });
+
+  console.log(formState?.isValid);
 
   const postLoginRequest = usePost({
     url: 'auth/verify',
@@ -56,7 +59,13 @@ const Login: FC = () => {
       </Link>
       <div className="flex flex-row items-center justify-center gap-2">
         <Button title="ورود با گوگل" />
-        <Button type="submit" title="ورود" className="!px-6" isLoading={postLoginRequest?.isLoading} />
+        <Button
+          type="submit"
+          title="ورود"
+          className="!px-6"
+          disabled={!formState?.isValid}
+          isLoading={postLoginRequest?.isLoading}
+        />
       </div>
       <Link className="mt-8 text-right text-xs font-thin text-primary" to="/register">
         عضو نیستید ؟ ثبت نام کنید

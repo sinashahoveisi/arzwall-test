@@ -53,7 +53,7 @@ const TextInput: FC<Props> = ({
           type={showValue ? 'text' : type}
           id={name}
           className={clsx(
-            'text-md fo ltr w-full w-80 rounded border border-pen-light bg-[#161a1e] p-4 text-left text-xs text-body outline-none focus:border-2',
+            'text-md fo ltr box-border w-full w-80 rounded border border-pen-light bg-[#161a1e] p-4 text-left text-xs text-body outline-pen-light focus:outline focus:outline-1',
             {'pr-12': type === 'password'},
             {'cursor-not-allowed bg-gray-200': disabled},
             {'border border-red-400': error?.message},
