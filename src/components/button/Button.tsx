@@ -31,13 +31,13 @@ const Button: FC<Props> = ({
   onClick,
   backgroundColor,
   variant = 'primary',
-  width = 'w-full sm:w-fit',
+  width = 'w-fit',
   iconOnly = false
 }) => {
   const clx = useMemo(
     () =>
       clsx(
-        'px-3 py-2 min-w-fit text-center text-xs font-thin text-body justify-center border-2 transition-all duration-300 my-2 flex shrink-0 items-center rounded-lg',
+        'px-3 py-2 w-fit text-center text-xs font-thin text-body justify-center border-2 transition-all duration-300 my-2 flex shrink-0 items-center rounded-lg',
         className,
         {'bg-red-500 border-transparent': variant === 'danger' && !disabled},
         {'!text-red-500 border-transparent bg-transparent': variant === 'danger-ghost' && !disabled},
@@ -49,7 +49,7 @@ const Button: FC<Props> = ({
         {'!text-secondary-dark border-secondary-dark': variant === 'secondary-outline' && !disabled},
         {'!text-zinc-500/80 border-gray-200': variant === 'muted-outline' && !disabled},
         {'cursor-not-allowed': isLoading || disabled},
-        {'border-transparent bg-gray-200 ': disabled && !includes(variant, 'outline')},
+        {'border-transparent text-[#aaa] bg-[#ebebeb] opacity-[0.7]': disabled && !includes(variant, 'outline')},
         {'text-zinc-500/80 border-gray-200': disabled && includes(variant, 'outline')},
         {'opacity-80': isLoading},
         {[width]: width},

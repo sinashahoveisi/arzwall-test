@@ -14,7 +14,7 @@ interface Props {
   disabled?: boolean;
   placeholder?: string;
   autocomplete?: 'on' | 'off';
-  control: Control;
+  control: Control<any>;
   maxLength?: number;
 }
 
@@ -53,7 +53,7 @@ const TextInput: FC<Props> = ({
           type={showValue ? 'text' : type}
           id={name}
           className={clsx(
-            'text-md fo w-full w-80 rounded border border-pen-light bg-[#161a1e] p-4 text-left text-xs text-body outline-none focus:border-2',
+            'text-md fo ltr w-full w-80 rounded border border-pen-light bg-[#161a1e] p-4 text-left text-xs text-body outline-none focus:border-2',
             {'pr-12': type === 'password'},
             {'cursor-not-allowed bg-gray-200': disabled},
             {'border border-red-400': error?.message},
@@ -67,16 +67,14 @@ const TextInput: FC<Props> = ({
         {type === 'password' && (
           <button
             type="button"
-            className={`absolute top-[1px] right-1 m-1 flex inline-flex h-10 w-10 items-center items-center justify-center rounded-full bg-primary ${
-              error?.message ? 'text-rose-400' : ''
-            }`}
+            className="absolute top-[1px] right-1 m-1 flex inline-flex h-10 w-10 items-center items-center justify-center rounded-full bg-primary"
             onClick={togglePassword}>
             {showValue ? <EyeSVG /> : <EyeLineSVG />}
           </button>
         )}
       </div>
       {error?.message && (
-        <span className="mt-1 ml-1 flex items-center text-xs font-medium tracking-wide text-red-500">
+        <span className="mt-1 ml-1 flex items-center text-tiny font-thin tracking-wide text-red-500">
           {error?.message}
         </span>
       )}

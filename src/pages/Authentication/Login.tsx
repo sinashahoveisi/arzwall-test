@@ -2,30 +2,48 @@ import type {FC} from 'react';
 import * as yup from 'yup';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import TextInput from '@/components/input/TextInput';
 import {LoginRequestProps} from '@/types/auth';
 import Button from '@/components/button/Button';
+import {usernameRegex, passwordRegex} from '@/assets/constants/auth';
+import usePost from '@/hooks/request/usePost';
+import useUser from '@/hooks/user/useUser';
 
 const Login: FC = () => {
+  const user = useUser();
+  const navigate = useNavigate();
+
   const validationSchema = yup.object().shape({
     username: yup
       .string()
       .trim()
-      .required('require')
-      .matches(/^(\+98|0)?9\d{9}$/, 'correctUsername')
+      .required('ایمیل یا شماره موبایل معتبر وارد نمایید')
+      .matches(usernameRegex, 'ایمیل یا شماره موبایل معتبر وارد نمایید'),
+    password: yup
+      .string()
+      .trim()
+      .required('')
+      .matches(passwordRegex, 'حد اقل ۸ کاراکتر، شامل یک حرف بزرگ ، یک عدد ، یک کارکتر خاص')
   });
-  const {handleSubmit, control, setValue} = useForm<LoginRequestProps | any>({
+  const {handleSubmit, control} = useForm<LoginRequestProps>({
     resolver: yupResolver(validationSchema)
   });
 
+  const postLoginRequest = usePost({
+    url: 'auth/verify',
+    onSuccess(response: any) {
+      user.setUser({
+        access_token: response?.data?.access_token,
+        refresh_token: response?.data?.access_token,
+        is_logged_in: true
+      });
+      navigate('/dashboard', {replace: true});
+    }
+  });
+
   const onSubmit = (data: LoginRequestProps) => {
-    // checkUser.post({
-    //   username: data?.username,
-    //   code: data?.code,
-    //   key: data?.key,
-    //   send_code: true
-    // });
+    postLoginRequest.post(data);
   };
 
   return (
@@ -38,7 +56,7 @@ const Login: FC = () => {
       </Link>
       <div className="flex flex-row items-center justify-center gap-2">
         <Button title="ورود با گوگل" />
-        <Button title="ورود" className="!px-6" />
+        <Button type="submit" title="ورود" className="!px-6" isLoading={postLoginRequest?.isLoading} />
       </div>
       <Link className="mt-8 text-right text-xs font-thin text-primary" to="/register">
         عضو نیستید ؟ ثبت نام کنید

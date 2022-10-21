@@ -1,14 +1,14 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios';
-import {allocateParamToString} from 'utils';
-import {useMutation,} from 'react-query';
-import useUser from '@/hooks/user/useUser';
+import {useMutation} from 'react-query';
 import merge from 'lodash/merge';
 import set from 'lodash/set';
 import isFunction from 'lodash/isFunction';
+import useUser from '@/hooks/user/useUser';
+import {allocateParamToString} from '@/utils/common';
 import type {mutationRequestProps} from '@/types/request';
 
 interface Props {
-  url?: string;
+  url: string;
   query?: object;
   method?: 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'GET';
   isUrlencoded?: boolean;
@@ -22,24 +22,16 @@ interface Props {
  * @param url
  * @param method
  * @param query
- * @param version
  * @param isMultipart
  * @param onSuccess
  * @param onError
  * @param isUrlencoded
  */
-const usePost = ({
-  url,
-  method = 'POST',
-  query,
-  isMultipart,
-  onSuccess,
-  onError,
-  isUrlencoded = false
-}: Props) => {
+const usePost = ({url, method = 'POST', query, isMultipart, onSuccess, onError, isUrlencoded = false}: Props) => {
   const {user} = useUser();
 
   const requestConfig: AxiosRequestConfig = {
+    baseURL: import.meta.env.VITE_BASE_URL,
     headers: {
       Authorization: user?.access_token ? `Bearer ${user?.access_token}` : '',
       'Content-type': isMultipart
@@ -65,7 +57,8 @@ const usePost = ({
 
   const mutationData: any = useMutation(createRequest, {
     retry: (failureCount: number, error: AxiosError): boolean => {
-      if (error?.response?.status === 404 || error?.response?.status === 500 || error?.response?.status === 422) return false;
+      if (error?.response?.status === 404 || error?.response?.status === 500 || error?.response?.status === 422)
+        return false;
       return failureCount <= 1;
     },
     onSuccess: (data, variables) => {

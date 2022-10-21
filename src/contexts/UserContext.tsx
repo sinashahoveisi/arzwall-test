@@ -1,8 +1,8 @@
 import {useState, SetStateAction, Dispatch, useEffect, FC, createContext, ReactNode} from 'react';
-import {userAccessProps} from '@/types/user';
-import {useNavigation} from 'react-router-dom';
-import {getFromCookie, saveToCookie} from '@/utils/storage';
+import {useNavigate} from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
+import {userAccessProps} from '@/types/user';
+import {getFromCookie, saveToCookie} from '@/utils/storage';
 
 interface UserContextProps {
   user: userAccessProps;
@@ -13,15 +13,15 @@ interface Props {
   children: ReactNode;
 }
 
-const UserContext = createContext<UserContextProps | null>(null);
+const UserContext = createContext<UserContextProps>({} as any);
 
 export const UserProvider: FC<Props> = ({children}) => {
-  // const history = useNavigation();
+  const navigate = useNavigate();
 
   const initialUser: userAccessProps = {
     is_logged_in: false,
     access_token: '',
-    refresh_token: '',
+    refresh_token: ''
   };
   let initialState: userAccessProps;
   try {
@@ -37,8 +37,8 @@ export const UserProvider: FC<Props> = ({children}) => {
     if (!isEqual(persistToken, user)) {
       saveToCookie('token', user);
     }
-    if (!user?.access_token && history) {
-      // history.('/');
+    if (!user?.access_token) {
+      navigate('/', {replace: true});
     }
   }, [user]);
 
